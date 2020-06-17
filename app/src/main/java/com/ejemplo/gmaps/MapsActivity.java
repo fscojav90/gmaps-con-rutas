@@ -50,6 +50,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //crear marcador ust
+                LatLng ust = new LatLng(-18.48341, -70.310184);
+                mMap.addMarker(new MarkerOptions().position(ust).title("Santo Tómas"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ust, 15));
+
                 //tomar valores de los EditText
                 try {
                     double lat = Double.parseDouble(etLatitud.getText().toString());
@@ -57,14 +62,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     //marcador
                     LatLng marcador = new LatLng(lat, lng);
                     //título
-                    //mMap.addMarker(new MarkerOptions().position(marcador).title("Mi marcador"));
                     mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mi_marcador_round))
                             .anchor(0.0f, 1.0f).position(marcador).title("Mi marcador"));
-                    //mover camara
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marcador, 16));
+                    //código ruta
+                    String url = getRequestUrl(ust, marcador);
+
+                    com.ejemplo.gmaps.MapsActivity.TaskResquestDirections taskResquestDirections = new com.ejemplo.gmaps.MapsActivity.TaskResquestDirections();
+                    taskResquestDirections.execute(url);
+
                 }catch (Exception ex){
                     Toast.makeText(MapsActivity.this, "Valor inválido!!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -88,22 +97,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-//        LatLng arica = new LatLng(-18.478518, -70.32106);
-      //  LatLng ust = new LatLng(-18.483474, -70.310192);
-//        mMap.addMarker(new MarkerOptions().position(arica).title("Arica"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(arica));
-     //   mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ust, 16));
-//        mMap.addMarker(new MarkerOptions().position(ust).title("Santo Tomás"));
-    //    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_mi_marcador_round))
-  //              .anchor(0.0f, 1.0f).position(ust).title("Santo Tomás"));
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        //otrooo
-        // Add a marker in Sydney and move the camera
         LatLng catedral = new LatLng(-18.478973, -70.320696);
         mMap.addMarker(new MarkerOptions().position(catedral).title("Arica"));
-        //-mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(catedral, 15));
 
         LatLng ust = new LatLng(-18.48341, -70.310184);
