@@ -38,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EditText etLongitud;
     private Button btBuscar;
     private GoogleMap mMap;
+    //private LatLng ust;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 //crear marcador ust
                 LatLng ust = new LatLng(-18.48341, -70.310184);
-                mMap.addMarker(new MarkerOptions().position(ust).title("Santo Tómas"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ust, 15));
-
                 //tomar valores de los EditText
                 try {
                     double lat = Double.parseDouble(etLatitud.getText().toString());
@@ -97,21 +95,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng catedral = new LatLng(-18.478973, -70.320696);
-        mMap.addMarker(new MarkerOptions().position(catedral).title("Arica"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(catedral, 15));
+        etLatitud.setText("-18.478973");
+        etLongitud.setText("-70.320696");
 
         LatLng ust = new LatLng(-18.48341, -70.310184);
-        mMap.addMarker(new MarkerOptions().position(ust).title("UST"));
-
-        String url = getRequestUrl(catedral, ust);
-
-        com.ejemplo.gmaps.MapsActivity.TaskResquestDirections taskResquestDirections = new com.ejemplo.gmaps.MapsActivity.TaskResquestDirections();
-        taskResquestDirections.execute(url);
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ust, 15));
+        mMap.addMarker(new MarkerOptions().position(ust).title("Santo Tómas"));
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
     }
-    //empieza
 
     private String getRequestUrl(LatLng origen, LatLng destino) {
         String resultado = "";
@@ -244,9 +236,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-
-
-
-   //termina
+    
 }
